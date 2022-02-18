@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import 'controllers/home_controller.dart';
+import 'models/funcionario.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -23,42 +24,63 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            TextFormField(
-              readOnly: true,
-              controller: controller.pathController,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                labelText: 'Escolha um arquivo',
-                suffixIcon: IconButton(
-                  onPressed: controller.selectFile,
-                  icon: const Icon(Icons.folder),
+            const SizedBox(height: 15),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    readOnly: true,
+                    controller: controller.pathController,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText: 'Escolha um arquivo',
+                      suffixIcon: IconButton(
+                        onPressed: controller.selectFile,
+                        icon: const Icon(Icons.folder),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(width: 15),
+                Expanded(
+                  child: IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: controller.calcular,
+                  ),
+                ),
+              ],
             ),
+            const SizedBox(height: 15),
+            const Divider(),
+            const SizedBox(height: 15),
             Observer(
-              builder: (_) {
-                if (controller.error) {
-                  showDialog(
-                    context: context,
-                    builder: (ctx) {
-                      return AlertDialog(
-                        content: Text(controller.erroMessage),
-                        title: const Text("Erro ao selecionar arquivo"),
-                        actions: [
-                          TextButton(
-                            onPressed: controller.selectFile,
-                            child: const Text('Tentar novamente!'),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.pop(ctx),
-                            child: const Text('Fechar'),
-                          )
-                        ],
-                      );
-                    },
+              builder: (ctx) {
+                List<Funcionario> _funcionarios = controller.funcionarios;
+                if (controller.funcionarios.isEmpty) {
+                  return const Center(
+                    child: Text('Não há dados carregados'),
                   );
                 }
-                return Container();
+                if (controller.error) {
+                  return const SizedBox();
+                } else {
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: _funcionarios.length,
+                      itemBuilder: (cx, index) {
+                        final funcionario = _funcionarios[index];
+
+                        return Card(
+                          child: ListTile(
+                            title: Text(
+                              'Código: ${funcionario.codigo} | Pulsação: ${funcionario.pulsacao}',
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
               },
             )
           ],
