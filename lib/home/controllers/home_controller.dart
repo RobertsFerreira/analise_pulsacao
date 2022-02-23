@@ -51,6 +51,7 @@ abstract class _HomeControllerBase with Store {
       final List<Funcionario> _funcionarios = Funcionario.fromList(dados);
 
       setFuncionarios(_funcionarios);
+      store.verificaStatusFuncionario(funcionarios);
     } else {
       pathController.clear();
       setFuncionarios([]);
@@ -83,8 +84,8 @@ abstract class _HomeControllerBase with Store {
     }
   }
 
-  @action
-  calcular() {
-    store.calculoMedia(funcionarios);
+  @computed
+  Map<String, dynamic> get valorErroGeral {
+    return store.erroGeral(funcionarios);
   }
 }

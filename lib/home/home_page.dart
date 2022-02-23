@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 import 'controllers/home_controller.dart';
 import 'models/funcionario.dart';
+import 'shared/enum_status_pulsacao.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,9 +18,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -41,18 +39,34 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: IconButton(
-                    icon: const Icon(Icons.add),
-                    onPressed: controller.calcular,
-                  ),
-                ),
               ],
             ),
             const SizedBox(height: 15),
             const Divider(),
             const SizedBox(height: 15),
+            Observer(
+              builder: (_) {
+                if (controller.funcionarios.isNotEmpty) {
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            'Taxa da Amostragem ${controller.valorErroGeral['validacao'] ? 'válida!' : 'inválida!'}',
+                          ),
+                          const SizedBox(width: 5),
+                          Text('Taxa: ${controller.valorErroGeral['taxa']}%'),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      const Divider(),
+                    ],
+                  );
+                }
+                return const SizedBox();
+              },
+            ),
             Observer(
               builder: (ctx) {
                 List<Funcionario> _funcionarios = controller.funcionarios;
@@ -72,8 +86,28 @@ class _HomePageState extends State<HomePage> {
 
                         return Card(
                           child: ListTile(
-                            title: Text(
-                              'Código: ${funcionario.codigo} | Pulsação: ${funcionario.pulsacao}',
+                            title: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: Text(
+                                'Funcionario: Código: ${funcionario.codigo} | Pulsação: ${funcionario.pulsacao}',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            subtitle: Text(
+                              'Taxa: ${funcionario.erroRelativo}% -- Diferença para taxa da Sociedade de Cardiologia: ${funcionario.diferencaTaxaValida}%',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            trailing: Text(
+                              'Status do funcionario: ${funcionario.statusPulsacao?.toText}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black54,
+                              ),
                             ),
                           ),
                         );
