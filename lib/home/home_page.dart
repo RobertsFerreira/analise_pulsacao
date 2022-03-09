@@ -39,6 +39,20 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+                const SizedBox(width: 15),
+                SizedBox(
+                  height: 50,
+                  width: 100,
+                  child: ElevatedButton(
+                    onPressed: controller.funcionarios.isNotEmpty
+                        ? () => Navigator.of(context).pushNamed(
+                              '/graph/',
+                              arguments: controller.funcionarios,
+                            )
+                        : null,
+                    child: const Text('Ver Grafico'),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 15),
@@ -56,7 +70,10 @@ class _HomePageState extends State<HomePage> {
                             'Taxa da Amostragem ${controller.valorErroGeral['validacao'] ? 'válida!' : 'inválida!'}',
                           ),
                           const SizedBox(width: 5),
-                          Text('Taxa: ${controller.valorErroGeral['taxa']}%'),
+                          Text('Taxa: ${_fixedDecimalsPlaces(
+                            controller.valorErroGeral['taxa'],
+                            decimalsPlaces: 4,
+                          )}%'),
                         ],
                       ),
                       const SizedBox(height: 15),
@@ -96,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             subtitle: Text(
-                              'Taxa: ${funcionario.erroRelativo}% -- Diferença para taxa da Sociedade de Cardiologia: ${funcionario.diferencaTaxaValida}%',
+                              'Taxa: ${_fixedDecimalsPlaces(funcionario.erroRelativo)}% -- Diferença para taxa da Sociedade de Cardiologia: ${_fixedDecimalsPlaces(funcionario.diferencaTaxaValida)}%',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black54,
@@ -121,5 +138,12 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  String _fixedDecimalsPlaces(dynamic value, {int decimalsPlaces = 2}) {
+    if (value is int || value is double) {
+      return value.toStringAsFixed(decimalsPlaces);
+    }
+    return value;
   }
 }
