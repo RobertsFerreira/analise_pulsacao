@@ -40,18 +40,23 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(width: 15),
-                SizedBox(
-                  height: 50,
-                  width: 100,
-                  child: ElevatedButton(
-                    onPressed: controller.funcionarios.isNotEmpty
-                        ? () => Navigator.of(context).pushNamed(
-                              '/graph/',
-                              arguments: controller.funcionarios,
-                            )
-                        : null,
-                    child: const Text('Ver Grafico'),
-                  ),
+                Observer(
+                  builder: (_) {
+                    final isNotEmpty = controller.funcionarios.isNotEmpty;
+                    return SizedBox(
+                      height: 50,
+                      width: 100,
+                      child: ElevatedButton(
+                        onPressed: isNotEmpty
+                            ? () => Navigator.of(context).pushNamed(
+                                  '/graph/',
+                                  arguments: controller.funcionarios,
+                                )
+                            : null,
+                        child: const Text('Ver Grafico'),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -141,7 +146,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   String _fixedDecimalsPlaces(dynamic value, {int decimalsPlaces = 2}) {
-    if (value is int || value is double) {
+    if (value is double) {
       return value.toStringAsFixed(decimalsPlaces);
     }
     return value;

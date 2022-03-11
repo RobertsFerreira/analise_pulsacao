@@ -30,15 +30,15 @@ class _GraphPageState extends State<GraphPage> {
 
     final abaixoMed = ItemGraph(
       status: StatusPulsacao.abaixoMedia.toText,
-      porcentagem: _abaixoMed.length / widget.funcionarios.length,
+      porcentagem: _abaixoMed.length,
     );
     final naMed = ItemGraph(
       status: StatusPulsacao.naMedia.toText,
-      porcentagem: _naMed.length / widget.funcionarios.length,
+      porcentagem: _naMed.length,
     );
     final acimaMed = ItemGraph(
       status: StatusPulsacao.acimaMedia.toText,
-      porcentagem: _acimaMed.length / widget.funcionarios.length,
+      porcentagem: _acimaMed.length,
     );
 
     _status = <ItemGraph>[
@@ -56,14 +56,17 @@ class _GraphPageState extends State<GraphPage> {
       appBar: AppBar(),
       body: SfCartesianChart(
         plotAreaBorderWidth: 0,
-        title: ChartTitle(text: 'Quantificação da pulsação dos funcionário'),
+        title: ChartTitle(
+          text: 'Números de Fúncionarios de cada status em relação à Média',
+        ),
         primaryXAxis: CategoryAxis(
           majorGridLines: const MajorGridLines(width: 0),
         ),
         primaryYAxis: NumericAxis(
-            axisLine: const AxisLine(width: 0),
-            labelFormat: '{value}%',
-            majorTickLines: const MajorTickLines(size: 0)),
+          axisLine: const AxisLine(width: 0),
+          labelFormat: '{value} Funcionário(s)',
+          majorTickLines: const MajorTickLines(size: 0),
+        ),
         series: _getDefaultColumnSeries(_status),
         tooltipBehavior: _tooltipBehavior,
       ),
@@ -110,7 +113,7 @@ class _GraphPageState extends State<GraphPage> {
 
 class ItemGraph {
   final String status;
-  final double porcentagem;
+  final int porcentagem;
 
   ItemGraph({
     required this.status,
