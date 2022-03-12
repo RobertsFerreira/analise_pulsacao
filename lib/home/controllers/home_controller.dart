@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:analise_pulsacao/home/models/funcionario.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:mobx/mobx.dart';
 import 'package:asuka/asuka.dart' as asuka;
 
@@ -57,18 +57,18 @@ abstract class _HomeControllerBase with Store {
       setFuncionarios([]);
       asuka.showDialog(
         builder: (ctx) {
-          return AlertDialog(
+          return ContentDialog(
             title: const Text('Erro ao selecionar arquivo!'),
             content: const Text('Selecione um arquivo por favor!'),
             actions: [
-              TextButton(
+              Button(
                 onPressed: () {
                   Navigator.pop(ctx);
                   error = true;
                 },
                 child: const Text('Fechar'),
               ),
-              TextButton(
+              Button(
                 onPressed: () async {
                   Navigator.pop(ctx);
                   error = false;

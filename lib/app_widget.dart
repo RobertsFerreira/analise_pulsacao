@@ -1,5 +1,5 @@
 import 'package:asuka/asuka.dart' as asuka;
-import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 
 import 'home/home_page.dart';
 import 'home/models/funcionario.dart';
@@ -10,11 +10,11 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return FluentApp(
       builder: asuka.builder,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        accentColor: Colors.blue,
       ),
       navigatorObservers: [
         asuka.asukaHeroController,

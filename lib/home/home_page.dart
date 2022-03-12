@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart' hide Colors;
+import 'package:flutter/material.dart'
+    hide Card, Scrollbar, IconButton, ListTile, Divider, Tooltip;
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import 'controllers/home_controller.dart';
@@ -24,18 +26,18 @@ class _HomePageState extends State<HomePage> {
           children: [
             const SizedBox(height: 15),
             Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
-                  child: TextFormField(
+                  child: TextBox(
                     readOnly: true,
                     controller: controller.pathController,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      labelText: 'Escolha um arquivo',
-                      suffixIcon: IconButton(
-                        onPressed: controller.selectFile,
-                        icon: const Icon(Icons.folder),
-                      ),
+                    header: 'Caminho da base de dados em TXT',
+                    placeholder: 'Selecione um arquivo TXT',
+                    suffix: IconButton(
+                      onPressed: controller.selectFile,
+                      icon: const Icon(FluentIcons.open_file),
                     ),
                   ),
                 ),
@@ -46,14 +48,23 @@ class _HomePageState extends State<HomePage> {
                     return SizedBox(
                       height: 50,
                       width: 100,
-                      child: ElevatedButton(
-                        onPressed: isNotEmpty
-                            ? () => Navigator.of(context).pushNamed(
-                                  '/graph/',
-                                  arguments: controller.funcionarios,
-                                )
-                            : null,
-                        child: const Text('Ver Grafico'),
+                      child: Tooltip(
+                        message: !isNotEmpty
+                            ? 'Carregue os dados no sistema para ver os gráficos'
+                            : 'Gráfico baseado nos dados',
+                        child: FilledButton(
+                          onPressed: isNotEmpty
+                              ? () => Navigator.of(context).pushNamed(
+                                    '/graph/',
+                                    arguments: controller.funcionarios,
+                                  )
+                              : null,
+                          child: const Center(
+                            child: Text(
+                              'Ver Grafico',
+                            ),
+                          ),
+                        ),
                       ),
                     );
                   },
@@ -73,16 +84,21 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             'Taxa da Amostragem ${controller.valorErroGeral['validacao'] ? 'válida!' : 'inválida!'}',
+                            style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(width: 5),
-                          Text('Taxa: ${_fixedDecimalsPlaces(
-                            controller.valorErroGeral['taxa'],
-                            decimalsPlaces: 4,
-                          )}%'),
+                          Text(
+                            'Taxa: ${_fixedDecimalsPlaces(
+                              controller.valorErroGeral['taxa'],
+                              decimalsPlaces: 4,
+                            )}%',
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 15),
                       const Divider(),
+                      const SizedBox(height: 15),
                     ],
                   );
                 }
@@ -106,29 +122,33 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (cx, index) {
                         final funcionario = _funcionarios[index];
 
-                        return Card(
-                          child: ListTile(
-                            title: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 4),
-                              child: Text(
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: ListTile(
+                              title: Text(
                                 'Funcionario: Código: ${funcionario.codigo} | Pulsação: ${funcionario.pulsacao}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                            subtitle: Text(
-                              'Taxa: ${_fixedDecimalsPlaces(funcionario.erroRelativo)}% -- Diferença para taxa da Sociedade de Cardiologia: ${_fixedDecimalsPlaces(funcionario.diferencaTaxaValida)}%',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black54,
+                              subtitle: Text(
+                                'Taxa: ${_fixedDecimalsPlaces(funcionario.erroRelativo)}% -- Diferença para taxa da Sociedade de Cardiologia: ${_fixedDecimalsPlaces(funcionario.diferencaTaxaValida)}%',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black54,
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                            trailing: Text(
-                              'Status do funcionario: ${funcionario.statusPulsacao?.toText}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black54,
+                              trailing: Text(
+                                'Status do funcionario: ${funcionario.statusPulsacao?.toText}',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black54,
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),

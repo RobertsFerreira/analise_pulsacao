@@ -39,6 +39,7 @@ dependencies:
   file_picker: ^4.4.0
   syncfusion_flutter_charts: ^19.4.55
   asuka: ^2.0.0
+  fluent_ui: ^3.9.1
 
 dev_dependencies:
   flutter_test:

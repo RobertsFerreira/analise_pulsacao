@@ -1,3 +1,4 @@
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -52,9 +53,11 @@ class _GraphPageState extends State<GraphPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: SfCartesianChart(
+    return NavigationView(
+      appBar: const NavigationAppBar(
+        leading: BackButton(),
+      ),
+      content: SfCartesianChart(
         plotAreaBorderWidth: 0,
         title: ChartTitle(
           text: 'Números de Fúncionarios de cada status em relação à Média',
