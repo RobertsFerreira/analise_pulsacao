@@ -43,9 +43,7 @@ abstract class _HomeStoreBase with Store {
       double _diferencaValida =
           funcionario.erroRelativo - _porcentagemAceitavel;
 
-      if (_diferencaValida < 0) {
-        _diferencaValida *= -1;
-      }
+      _diferencaValida = _diferencaValida.abs();
 
       int index = funcionarios.indexOf(funcionario);
 

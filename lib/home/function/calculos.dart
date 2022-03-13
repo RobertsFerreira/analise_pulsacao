@@ -32,9 +32,7 @@ erroAbsoluto(double vp, {int? pulsacao}) {
     abs = vp - vm;
   } else {
     abs = vp - pulsacao;
-    if (abs < 0) {
-      abs *= -1;
-    }
+    abs = abs.abs();
   }
 
   return abs;
