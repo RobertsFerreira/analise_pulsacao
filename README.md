@@ -6,7 +6,7 @@
 
 - Ter instalado na máquina o windows 10 ou superior.
 - Caso queira reescrever o código:
- - Ter o [Flutter] (https://docs.flutter.dev/get-started/install) instalados com versão superior a 2.10
+ - Ter o [Flutter](https://docs.flutter.dev/get-started/install) instalados com versão superior a 2.10
 
 ---
 
